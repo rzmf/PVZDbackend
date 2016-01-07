@@ -3,6 +3,7 @@ MAINTAINER r2h2 <rainer@hoerbe.at>
 
 RUN yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm -y
 RUN yum install usbutils nano wget unzip gcc gcc-c++ redhat-lsb-core opensc pcsc-lite python-pip python-devel libxslt-devel -y
+RUN yum install xorg-x11-apps -y
 RUN pip install --upgrade pip
 #using iso8601 0.1.9 because of str/int compare bug in pyff
 RUN pip install six
@@ -14,7 +15,7 @@ RUN pip install pyff
 #using pykcs11 1.3.0 because of missing wrapper in v 1.3.1
 RUN pip install pykcs11==1.3.0
 RUN mkdir /opt/sac/
-RUN wget http://files.hoerbe.at/daunlod/SafeNetAuthenticationClient_Linux_8.1.zip -P /opt/sac/
+ADD lib/safenet/SafeNetAuthenticationClient_Linux_8.1.zip /opt/sac/
 RUN unzip /opt/sac/SafeNetAuthenticationClient_Linux_8.1.zip -d /opt/sac/
 RUN unzip /opt/sac/SAC\ 8.1\ Linux/x86_64/SAC_8_1_0_4_Linux_RPM_64.zip -d /opt/sac/
 RUN rpm -i /opt/sac/SAC_8_1_0_4_Linux_RPM_64/RPM/SafenetAuthenticationClient-8.1.0-4.x86_64.rpm --nodeps
