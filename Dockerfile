@@ -31,3 +31,7 @@ RUN yum -y centos-release-scl-rh
 RUN yum -y install rhscl-rh-python34-*.noarch.rpm
 RUN yum -y install rh-python34
 RUN scl enable rh-python34 bash
+
+
+RUN systemctl enable  pcscd.service
+RUN systemctl start  pcscd.service
