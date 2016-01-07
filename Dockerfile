@@ -15,8 +15,10 @@ RUN pip install pyff
 RUN pip install pykcs11==1.3.0
 
 RUN mkdir -p /opt/sac/
-ADD mgmt_sys/lib/safenet/Linux/Installation/Core/RPM/x64/SafenetAuthenticationClient-core-9.0.43-0.x86_64.rpm /opt/sac/SafenetAuthenticationClient-core.rpm
-RUN rpm -i /opt/sac/SafenetAuthenticationClient-core.rpm
+#ADD mgmt_sys/lib/safenet/Linux/Installation/Core/RPM/x64/SafenetAuthenticationClient-core-9.0.43-0.x86_64.rpm /opt/sac/SafenetAuthenticationClient-core.rpm
+#RUN rpm -i /opt/sac/SafenetAuthenticationClient-core.rpm
+ADD lib/safenet/Linux/Installation/Standard/RPM/x64/SafenetAuthenticationClient-9.0.43-0.x86_64.rpm /opt/sac/
+RUN rpm -i /opt/sac/SafenetAuthenticationClient-9.0.43-0.x86_64.rpm
 
 RUN mkdir -p /opt/sac/tests
 ADD resource/init-test.sh /opt/sac/tests/
