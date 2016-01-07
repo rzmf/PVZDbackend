@@ -31,10 +31,12 @@ ADD resource/test-swamid-yaml /opt/sac/tests/
 RUN yum -y install scl-utils
 # Centos7 for RHEL see https://www.softwarecollections.org/en/scls/rhscl/rh-python34/
 RUN yum -y install centos-release-scl-rh
-RUN yum -y install rhscl-rh-python34-*.noarch.rpm
-RUN yum -y install rh-python34
-RUN scl enable rh-python34 bash
+#RUN yum -y install rhscl-rh-python34-*.noarch.rpm
+#RUN yum -y install rh-python34
+#RUN scl enable rh-python34 bash
 
+RUN yum -y install https://centos6.iuscommunity.org/ius-release.rpm
+RUN yum -y install python34u
 
 RUN systemctl enable  pcscd.service
 RUN systemctl start  pcscd.service
