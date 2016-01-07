@@ -7,5 +7,5 @@
 #    in the container is achieved by mapping the X11 socket to the container and
 #    setting $DISPLAY to the value of the host
 docker run -it --rm \
-    --privileged -v /dev/bus/usb:/dev/bus/usb
+    --privileged -v /dev/bus/usb:/dev/bus/usb \
     -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix pvzdbe
