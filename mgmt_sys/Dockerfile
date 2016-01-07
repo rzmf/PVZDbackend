@@ -1,11 +1,9 @@
 FROM centos:centos7
 MAINTAINER r2h2 <rainer@hoerbe.at>
 
-
-yum -y update
-yum -y groupinstall "Development Tools" "GNOME Desktop" net-tools
+RUN yum -y groupinstall "Development Tools" "GNOME Desktop" net-tools
 # boot into GNOME
-ln -sf /lib/systemd/system/runlevel5.target /etc/systemd/system/default.target
+RUN ln -sf /lib/systemd/system/runlevel5.target /etc/systemd/system/default.target
 
 ADD opt/sac /opt/sac/
 ADD lib/safenet/Linux /opt/sac/
