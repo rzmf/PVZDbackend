@@ -27,16 +27,10 @@ ADD resource/start-service.sh /opt/sac/tests/
 ADD resource/test-yaml /opt/sac/tests/
 ADD resource/test-swamid-yaml /opt/sac/tests/
 
-# pyff is based on py2.x, but PVZD/PIP on py3.4
-RUN yum -y install scl-utils
-# Centos7 for RHEL see https://www.softwarecollections.org/en/scls/rhscl/rh-python34/
-RUN yum -y install centos-release-scl-rh
-#RUN yum -y install rhscl-rh-python34-*.noarch.rpm
-#RUN yum -y install rh-python34
-#RUN scl enable rh-python34 bash
+# pyff is based on py2.x, but PVZD/PIP on py3.4 (rh scl only has py3.3)
 
 RUN yum -y install https://centos6.iuscommunity.org/ius-release.rpm
 RUN yum -y install python34u
 
-RUN systemctl enable  pcscd.service
-RUN systemctl start  pcscd.service
+#RUN systemctl enable  pcscd.service
+#RUN systemctl start  pcscd.service
