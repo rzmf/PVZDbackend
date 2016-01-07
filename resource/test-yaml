@@ -1,0 +1,9 @@
+- load:
+   - http://files.hoerbe.at/daunlod/idpExampleOrg.xml
+- select: "!//md:EntityDescriptor[md:IDPSSODescriptor]"
+- xslt:
+    stylesheet: tidy.xsl
+- sign:
+    key: pkcs11:///usr/lib64/libeToken.so/test
+- publish: /tmp/idp.xml
+- stats

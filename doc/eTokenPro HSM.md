@@ -3,9 +3,9 @@ http://www.safenet-inc.de/data-protection/authentication/etoken-pro/
 
 The eToken Pro is a USB-format smartcard.  Attached to an internal USB connector 
 on the machine hosting the pyFF instance signatures can be created on the HSM 
-via a PKCSä11 interface, thus not exposing the private key to the server.
+via a PKCS#11 interface, thus not exposing the private key to the server.
 
-The machine running pyFF (Linux 2.6 kernel) need to have the etoken driver
+The machine running pyFF need to have the etoken driver
 libraries installed. The interface is made available to pyFF via PyKCS11.
 
 ## Fail-over Configuration
@@ -20,23 +20,25 @@ creation, and secure physical storage for the off-line copy is recommended.
    purpose. Make sure to encrypt either the hard disk or file systems. Ideally
    it is a live system booted from a read-only storage device.
 2. Use the pki tool of your choice to generate the RSA key pair and 
-   save it in a PKCS#12 keystore.
-3. Use the Gemalto/SafeNet Authentication Client GUI tool to initialize the token for 
-   2048 RSA keys and FIPS mode, and also to import the private key and cert 
-   from the PKCS#12 keystore.
+   save it in a PKCS#12 keystore. See the example with OpenSSL below.
+3. Use the "SafeNet Authentication Client" GUI tool to perform follwoing steps:
+   - Connect the eToken via USB to the management system;
+   - Initialize the token, deleting all existing data and setting token name and
+     token password (no need for the admin password);
+   - Configure it for 2048 RSA keys and FIPS-140-L2 mode;
+   - Import the signing key and cert from the PKCS#12 keystore.
 4. Repeat this for each token.
 5. You may want to save the original key for backup storage, too. A protection
    for the key could be to split a large key between multiple persons, and use a
-   derived key to AES-256 encrypt it, like this:
+   derived key to AES-256 encrypt it, like the example below.
    openssl rand -base64 48 > keyN.txt # generate one random key per person
    cat key*.txt > openssl dgst -sha256 > enc_key.txt # derive encryption key 
    openssl enc -aes-256-cbc -kfile enc_key.txt -in hsm_private.key > hsm_private_key.enc 
    test if you can decrypt it:
    openssl enc -d -aes-256-cbc -kfile enc_key.txt -in hsm_private_key.enc > hsm_private_dup.key 
    diff hsm_private.key hsm_private_dup.key # must not show a difference!
-6. Delete data on the management system to assure that theHSM private key cannot
+6. Delete data on the management system to assure that the HSM private key cannot
    be recovered.
-   
 
 ### Security Considerations
 So you're losing out on the (more secure) generation of the private
@@ -62,7 +64,34 @@ a good network HSM you can easily pay this for maintenance - weekly, per site.
 
 ### Other options 
 Nitrokey HSM has a similar price tag as the eToken Pro, and is a brand-new
-product as of late 2015. It'S driver is open source (OpenSC).
+product as of late 2015. Its driver is open source (OpenSC) as is the complete 
+hardware and firmware.
+
+
+## Examples
+### Generating a Split Encryption Key
+openssl rand -base64 96 | perl -pe 's/\n//' > random_str.b64  # 128 chars
+split -a 1 -b 32 random_str.b64 enc_key_   # 4 key files with 32 chars each
+cat enc_key_a  enc_key_b  enc_key_c  enc_key_d > enc_key.b64
+
+
+### Generating a Key Pair and Certifikate as PKCS#12 with OpenSSL
+// The resulting provate key will be unencrypted. This is required for the import to the eToken.
+openssl req -newkey rsa:2048 -nodes -x509 -new -out hsm_root_crt.pem -keyout hsm_root_key.pem -days 7300 \
+   -subj "/C=AT/O=Stadt Wien/OU=MA14/CN=Portalverbund Metadaten Signator" -batch 
+openssl x509 -text -noout -in hsm_root_crt.pem > hsm_root_crt.txt 
+openssl pkcs12 -export -in hsm_root_crt.pem -inkey hsm_root_key.pem -out hsm_root_crt.p12 -name "Portalverbund Metadata Signing Key" 
+
+### Initializing the eToke Pro from the command line
+// As an alternative to the GUI tool supplied by SafeNet, you might want to initialize the token in the command line.
+echo Initializing Token
+pkcs11-tool --module /usr/lib64/libeToken.so --init-token --label test --pin secret1 --so-pin secret2 
+echo Initializing User PIN
+pkcs11-tool --module /usr/lib64/libeToken.so -l --init-pin --pin secret1 --so-pin secret2
+echo Generating RSA key (cannot be exported!)
+pkcs11-tool --module /usr/lib64/libeToken.so -l -k --key-type rsa:2048 -d 1 --label test --pin secret1 
+echo Checking objects on eToken
+pkcs11-tool --module /usr/lib64/libeToken.so -l -O --pin secret1 
 
 
 (Based on text from Peter Schober, Aconet) 
