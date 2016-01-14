@@ -56,7 +56,7 @@ RUN pip3.4 install -r opt/PVZDpolman/PolicyManager/requirements.txt
 
 # install dependent packages from other sources
 WORKDIR /opt/PVZDpolman/dependent_pkg
-RUN cd json2html && python3.4 setup.py install && cd ..
+#RUN cd json2html && python3.4 setup.py install && cd ..  # only required for PMP
 RUN cd pyjnius && python3.4 setup.py install && cd ..
 RUN cd ordereddict* && python3.4 setup.py install && cd ../../..
 
