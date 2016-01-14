@@ -3,7 +3,7 @@ MAINTAINER r2h2 <rainer@hoerbe.at>
 
 # eTokenPro Management System
 
-RUN yum -y groupinstall "Development Tools" "GNOME Desktop" net-tools
+RUN yum -y groupinstall "Development Tools" "GNOME Desktop" net-tools openssl
 # boot into GNOME
 RUN ln -sf /lib/systemd/system/runlevel5.target /etc/systemd/system/default.target
 
@@ -11,10 +11,10 @@ RUN yum -y install pcsc-lite
 
 RUN mkdir -p /opt/sac/
 ADD lib/safenet/Linux/Installation/Standard/RPM/x64/SafenetAuthenticationClient-9.0.43-0.x86_64.rpm /opt/sac/
-RUN rpm -i /opt/sac/SafenetAuthenticationClient-9.0.43-0.x86_64.rpm --
+RUN rpm -i /opt/sac/SafenetAuthenticationClient-9.0.43-0.x86_64.rpm --nodeps
 
 RUN systemctl enable  pcscd.service
-RUN systemctl start  pcscd.service
+# RUN systemctl start  pcscd.service
 
 
 

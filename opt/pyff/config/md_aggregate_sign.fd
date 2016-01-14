@@ -1,0 +1,19 @@
+- load:
+  - /var/lib/pyff/pvmd/accepted
+- select
+- xslt:
+    stylesheet: tidy.xsl
+- store: 
+     directory: /tmp/
+- finalize:
+     cacheDuration: PT4H
+     validUntil: P10D
+     ID: SignPortalverbundGvAt_
+- sign:
+	#HSM key:
+	key: pkcs11:///usr/lib64/libeToken.so/test
+    #SW cert:
+    #key: /etc/pki/sign/private/SignMetadataKukPortalverbundAt-key.pem
+    #cert: /etc/pki/sign/certs/SignMetadataKukPortalverbundAt-crt.pem
+- publish: /var/lib/pyff/pvmd/publish/metadata_signed.xml
+

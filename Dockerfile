@@ -3,9 +3,12 @@ MAINTAINER r2h2 <rainer@hoerbe.at>
 
 RUN yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm -y
 RUN yum install usbutils nano wget unzip gcc gcc-c++ redhat-lsb-core opensc pcsc-lite python-pip python-devel libxslt-devel -y
+# TODO: install python 2.7 from SCL. Reason: pip install of pyXMLSecurity failed
+#       -> need virtualenv
 RUN pip install --upgrade pip
 RUN pip install six
 #use easy_install solves install bug
+# InsecurePlatformWarning can be ignored - this system does not use TLS
 RUN easy_install --upgrade six
 RUN pip install importlib
 #using iso8601 0.1.9 because of str/int compare bug in pyff
@@ -34,3 +37,6 @@ RUN yum -y install python34u
 
 #RUN systemctl enable  pcscd.service
 #RUN systemctl start  pcscd.service
+
+
+# create SW-certificate for test of pyff:
