@@ -10,6 +10,7 @@ if [ ! -d 'opt/PVZDpolman' ]; then
     ln -s benson-basis/pyjnius pyjnius
     curl -O https://pypi.python.org/packages/source/o/ordereddict/ordereddict-1.1.tar.gz
     tar -xzf ordereddict-*.tar.gz
+    cd ../../..
 fi
 
 docker build -t=pvzdbe .

@@ -51,7 +51,7 @@ RUN yum -y install python34u-devel
 # RHEL 6: SCL
 
 # install required packages from pypi
-yum -y install libffi-devel openssl-devel
+RUN yum -y install libffi-devel openssl-devel
 RUN pip3.4 install -r opt/PVZDpolman/PolicyManager/requirements.txt
 
 # install dependent packages from other sources
