@@ -52,10 +52,10 @@ RUN yum -y install python34u
 RUN pip3.4 install -r opt/PVZDpolman/requirements.txt
 
 # install dependent packages from other sources
-RUN cd opt/PYZDpolman/dependent_pkg && \
+RUN cd opt/PYZDpolman/PolicyManager/dependent_pkg && \
     cd json2html && python3.4 setup.py install && cd .. && \
     cd pyjnius && python3.4 setup.py install && cd .. && \
-    cd ordereddict* && python3.4 setup.py install && cd ../..
+    cd ordereddict* && python3.4 setup.py install && cd ../../..
 
 
 
