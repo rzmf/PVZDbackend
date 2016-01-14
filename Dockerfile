@@ -55,7 +55,7 @@ RUN yum -y install libffi-devel openssl-devel
 RUN pip3.4 install -r opt/PVZDpolman/PolicyManager/requirements.txt
 
 # install dependent packages from other sources
-RUN cd opt/PYZDpolman/dependent_pkg
+RUN cd opt/PVZDpolman/dependent_pkg
 RUN cd json2html && python3.4 setup.py install && cd ..
 RUN cd pyjnius && python3.4 setup.py install && cd ..
 RUN cd ordereddict* && python3.4 setup.py install && cd ../../..
