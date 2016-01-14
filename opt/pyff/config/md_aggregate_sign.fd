@@ -1,5 +1,8 @@
 - load:
   - /var/lib/pyff/pvmd/accepted
+# select all except IDPs
+#- select: "!//md:EntityDescriptor[md:IDPSSODescriptor]"
+# select all
 - select
 - xslt:
     stylesheet: tidy.xsl
@@ -10,7 +13,7 @@
      validUntil: P10D
      ID: SignPortalverbundGvAt_
 - sign:
-	#HSM key:
+	#HSM key:  replace 'test' with the actual name of the signing key
 	key: pkcs11:///usr/lib64/libeToken.so/test
     #SW cert:
     #key: /etc/pki/sign/private/SignMetadataKukPortalverbundAt-key.pem

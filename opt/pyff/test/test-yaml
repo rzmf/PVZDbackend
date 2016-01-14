@@ -1,0 +1,9 @@
+- load:
+   - /var/lib/git/pvmd/accepted
+- select:
+- xslt:
+    stylesheet: tidy.xsl
+- sign:
+    key: pkcs11:///usr/lib64/libeToken.so/test
+- publish: /var/lib/git/pvmd/published/idp.xml
+- stats

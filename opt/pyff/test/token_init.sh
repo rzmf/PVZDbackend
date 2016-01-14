@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# TEST: initialize eToken with a key pair
+# (in production the keys are imported with the SAC tool)
+
 echo ***Initializing Token***
 pkcs11-tool --module /usr/lib64/libeToken.so --init-token --label test --pin secret1 --so-pin secret2 || exit -1
 echo ***Initializing User PIN***
