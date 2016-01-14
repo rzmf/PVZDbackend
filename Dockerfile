@@ -2,6 +2,8 @@ FROM centos:centos6
 MAINTAINER r2h2 <rainer@hoerbe.at>
 
 RUN yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm -y
+# CentOS7
+#RUN yum -y install epel-release
 RUN yum install usbutils nano wget unzip gcc gcc-c++ redhat-lsb-core opensc pcsc-lite python-pip python-devel libxslt-devel -y
 
 
@@ -44,11 +46,12 @@ COPY opt /opt
 
 # CentOS 6: IUS
 RUN yum -y install https://centos6.iuscommunity.org/ius-release.rpm
-RUN yum -y install python34u
+RUN yum -y install python34u-devel
 
 # RHEL 6: SCL
 
 # install required packages from pypi
+yum -y install libffi-devel openssl-devel
 RUN pip3.4 install -r opt/PVZDpolman/PolicyManager/requirements.txt
 
 # install dependent packages from other sources
@@ -56,6 +59,10 @@ RUN cd opt/PYZDpolman/dependent_pkg && \
     cd json2html && python3.4 setup.py install && cd .. && \
     cd pyjnius && python3.4 setup.py install && cd .. && \
     cd ordereddict* && python3.4 setup.py install && cd ../../..
+
+RUN echo "export JAVA_HOME=/etc/alternatives/java_sdk_1.8.0" >> ~/.bashrc
+RUN echo "export JDK_HOME=/etc/alternatives/java_sdk_1.8.0" >> ~/.bashrc
+RUN echo "export JRE_HOME=/etc/alternatives/java_sdk_1.8.0/jre" >> ~/.bashrc
 
 
 
