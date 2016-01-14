@@ -55,10 +55,10 @@ RUN yum -y install libffi-devel openssl-devel
 RUN pip3.4 install -r opt/PVZDpolman/PolicyManager/requirements.txt
 
 # install dependent packages from other sources
-RUN cd opt/PYZDpolman/dependent_pkg && \
-    cd json2html && python3.4 setup.py install && cd .. && \
-    cd pyjnius && python3.4 setup.py install && cd .. && \
-    cd ordereddict* && python3.4 setup.py install && cd ../../..
+RUN cd opt/PYZDpolman/dependent_pkg
+RUN cd json2html && python3.4 setup.py install && cd ..
+RUN cd pyjnius && python3.4 setup.py install && cd ..
+RUN cd ordereddict* && python3.4 setup.py install && cd ../../..
 
 RUN echo "export JAVA_HOME=/etc/alternatives/java_sdk_1.8.0" >> ~/.bashrc
 RUN echo "export JDK_HOME=/etc/alternatives/java_sdk_1.8.0" >> ~/.bashrc
