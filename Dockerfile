@@ -59,10 +59,10 @@ RUN pip3.4 install -r opt/PVZDpolman/PolicyManager/requirements.txt
 #RUN cd json2html && python3.4 setup.py install && cd ..  # only required for PMP
 #RUN cd ordereddict* && python3.4 setup.py install && cd ../../.. # only for jason2html
 WORKDIR /opt/PVZDpolman/dependent_pkg/pyjnius
-RUN JAVA_HOME=/etc/alternatives/java_sdk_1.8.0; \
-    JDK_HOME=/etc/alternatives/java_sdk_1.8.0; \
-    JRE_HOME=/etc/alternatives/java_sdk_1.8.0/jre \
-    python3.4 setup.py install && cd ..
+#RUN JAVA_HOME=/etc/alternatives/java_sdk_1.8.0; \
+#    JDK_HOME=/etc/alternatives/java_sdk_1.8.0; \
+#    JRE_HOME=/etc/alternatives/java_sdk_1.8.0/jre \
+#    python3.4 setup.py install && cd ..
 
 
 
