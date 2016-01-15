@@ -6,5 +6,11 @@
 # 3. run pyff
 # 4. push results
 
+# 1.
 cd /var/lib/git/pvmd
 git pull
+
+
+#2.
+cd /opt/PVZDpolman/PolicyManager/bin
+

@@ -8,8 +8,7 @@ RUN yum install usbutils nano wget unzip gcc gcc-c++ redhat-lsb-core opensc pcsc
 
 
 # === install pyFF
-# TODO: install python 2.7 from SCL. Reason: pip install of pyXMLSecurity failed
-#       -> need virtualenv
+# nutzt py2.6.6 ohne virtualenv
 RUN pip install --upgrade pip
 RUN pip install six
 #use easy_install solves install bug
@@ -68,6 +67,6 @@ WORKDIR /opt/PVZDpolman/dependent_pkg/pyjnius
 
 # === install git repo
 RUN cd /var/lib/git && \
-    git clone ssh://backend@frontend.pvzd.local/var/lib/git/pvzd.git
+    git clone ssh://backend@frontend.pvzd.local/var/lib/git/pvmd
 
 

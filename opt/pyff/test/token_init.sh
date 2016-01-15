@@ -13,7 +13,8 @@ echo ***Checking objects on eToken***
 pkcs11-tool --module /usr/lib64/libeToken.so -l -O --pin secret1 || exit -1
 echo ***Testing with pyFF***
 echo ****XML from hoerbe.at****
+export PYKCS11PIN=secret1
 pyff /opt/sac/tests/test-yaml
-echo ***Testing with pyFF***
-echo ****XML from swamid.se****
-pyff /opt/sac/tests/test-swamid-yaml
+#echo ***Testing with pyFF***
+#echo ****XML from swamid.se****
+#pyff /opt/sac/tests/test-swamid-yaml
