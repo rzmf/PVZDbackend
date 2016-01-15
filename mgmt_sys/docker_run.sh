@@ -3,9 +3,11 @@
 # there are 2 considerations for the use of the image
 # 1. To access the USB device the /dev/bus/usb is mapped to the host (you may want to map a single device)
 # 2. The container needs to be privileged to access the host devices
+docker run -it --rm pvzd_mgmt_sys bash
+
 # 3. To use the SafeNet Authentication Client X11 is required. Running X11 apps
 #    in the container is achieved by mapping the X11 socket to the container and
 #    setting $DISPLAY to the value of the host
-docker run -it --rm \
-    --privileged -v /dev/bus/usb:/dev/bus/usb \
-    -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix pvzd_mgmt_sys
+#docker run -it --rm \
+#    --privileged -v /dev/bus/usb:/dev/bus/usb \
+#    -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix pvzd_mgmt_sys

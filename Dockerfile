@@ -41,6 +41,8 @@ COPY opt /opt
 
 
 # === install PEP
+yum -y install java-1.8.0-openjdk-devel.x86_64
+
 # CentOS 7: preferring EPEL over redhat-scl and ius:
 # RUN yum -y install python34
 
@@ -64,6 +66,8 @@ WORKDIR /opt/PVZDpolman/dependent_pkg/pyjnius
 #    JRE_HOME=/etc/alternatives/java_sdk_1.8.0/jre \
 #    python3.4 setup.py install && cd ..
 
-
+# === install git repo
+RUN cd /var/lib/git && \
+    git clone ssh://backend@frontend.pvzd.local/var/lib/git/pvzd.git
 
 

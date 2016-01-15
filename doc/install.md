@@ -2,6 +2,7 @@
 
 ## git client
 The master repository resides on the frontend system. It is a bare Git repository.
+TODO: ssh-keys for client
 
 The sync between the local and remote git is a step in the cron job that is
 calling PEP, pyFF and the sync.
