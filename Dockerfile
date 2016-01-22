@@ -38,9 +38,9 @@ RUN pip install pykcs11==1.3.0
 
 COPY opt /opt
 
-
 # === install PEP
 yum -y install java-1.8.0-openjdk-devel.x86_64
+ENV JAVA_HOME /etc/alternatives/java_sdk_1.8.0
 
 # CentOS 7: preferring EPEL over redhat-scl and ius:
 # RUN yum -y install python34
@@ -60,13 +60,16 @@ RUN pip3.4 install -r opt/PVZDpolman/PolicyManager/requirements.txt
 #RUN cd json2html && python3.4 setup.py install && cd ..  # only required for PMP
 #RUN cd ordereddict* && python3.4 setup.py install && cd ../../.. # only for jason2html
 WORKDIR /opt/PVZDpolman/dependent_pkg/pyjnius
-#RUN JAVA_HOME=/etc/alternatives/java_sdk_1.8.0; \
-#    JDK_HOME=/etc/alternatives/java_sdk_1.8.0; \
-#    JRE_HOME=/etc/alternatives/java_sdk_1.8.0/jre \
-#    python3.4 setup.py install && cd ..
+RUN JAVA_HOME=$JAVA_HOME; \
+    JDK_HOME=JAVA_HOME; \
+    JRE_HOME=JAVA_HOME/jre \
+    python3.4 setup.py install && cd ..
 
 # === install git repo
-RUN cd /var/lib/git && \
-    git clone ssh://backend@frontend.pvzd.local/var/lib/git/pvmd
+VOLUME /var/lib/git
+RUN adduser backend && \
+    chown -R backend /opt /var/lib/git
 
-
+# === startup backend system
+USER backend
+CMD ["/opt/local/bin/backendd"]
