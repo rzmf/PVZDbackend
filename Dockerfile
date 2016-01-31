@@ -40,7 +40,7 @@ COPY opt /opt
 
 # === install PEP
 RUN yum -y install java-1.8.0-openjdk-devel.x86_64
-ENV JAVA_HOME /etc/alternatives/java_sdk_1.8.0
+ENV JAVA_HOME=/etc/alternatives/java_sdk_1.8.0
 
 # CentOS 7: preferring EPEL over redhat-scl and ius:
 # RUN yum -y install python34
