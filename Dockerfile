@@ -39,7 +39,7 @@ RUN pip install pykcs11==1.3.0
 COPY opt /opt
 
 # === install PEP
-yum -y install java-1.8.0-openjdk-devel.x86_64
+RUN yum -y install java-1.8.0-openjdk-devel.x86_64
 ENV JAVA_HOME /etc/alternatives/java_sdk_1.8.0
 
 # CentOS 7: preferring EPEL over redhat-scl and ius:
