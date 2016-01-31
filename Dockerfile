@@ -61,8 +61,8 @@ RUN pip3.4 install -r opt/PVZDpolman/PolicyManager/requirements.txt
 #RUN cd ordereddict* && python3.4 setup.py install && cd ../../.. # only for jason2html
 WORKDIR /opt/PVZDpolman/dependent_pkg/pyjnius
 RUN JAVA_HOME=$JAVA_HOME; \
-    JDK_HOME=JAVA_HOME; \
-    JRE_HOME=JAVA_HOME/jre \
+    JDK_HOME=$JAVA_HOME; \
+    JRE_HOME=$JAVA_HOME/jre \
     python3.4 setup.py install && cd ..
 
 # === install git repo
