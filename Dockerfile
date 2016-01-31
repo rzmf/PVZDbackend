@@ -72,4 +72,4 @@ RUN adduser backend && \
 
 # === startup backend system
 USER backend
-CMD ["/opt/local/bin/backendd"]
+CMD ["/usr/local/bin/backendd"]

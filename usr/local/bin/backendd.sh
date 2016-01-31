@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-FRONTENDHOST=frontend.pvzd.local
-
 # Execute the backend system process chain every 10 minutes:
 # 1. pull requests
 # 2. run PEP
