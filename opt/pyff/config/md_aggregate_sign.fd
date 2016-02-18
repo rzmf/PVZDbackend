@@ -1,5 +1,5 @@
 - load:
-  - /var/lib/pyff/pvmd/accepted
+  - /var/lib/git/pvmd/accepted
 # select all except IDPs
 #- select: "!//md:EntityDescriptor[md:IDPSSODescriptor]"
 # select all
@@ -13,10 +13,8 @@
      validUntil: P10D
      ID: SignPortalverbundGvAt_
 - sign:
-	#HSM key:  replace 'test' with the actual name of the signing key
-	key: pkcs11:///usr/lib64/libeToken.so/test
-    #SW cert:
+    key: pkcs11:///usr/lib64/libeToken.so/test
+    # SW cert:
     #key: /etc/pki/sign/private/SignMetadataKukPortalverbundAt-key.pem
     #cert: /etc/pki/sign/certs/SignMetadataKukPortalverbundAt-crt.pem
-- publish: /var/lib/pyff/pvmd/published/metadata_signed.xml
-
+- publish: /var/lib/git/pvmd/published/metadata_signed.xml
