@@ -11,7 +11,7 @@ cd /var/lib/git
 git clone ssh://backend@$FRONTENDHOST/var/lib/git/pvmd
 
 BASEDIR='/usr/local/pyFF'
-LOGDIR='/var/log/pvzd
+LOGDIR='/var/log/pvzd'
 
 
 # Note: Within Docker a daemon does not make sense. However, if installed
@@ -22,8 +22,10 @@ LOGDIR='/var/log/pvzd
 while true
 do
     cd /var/lib/git/pvmd && git pull
-    cd /opt/PVZDpolman/PolicyManager/bin && ./PEP.sh
-    /var/virtualenv/pyff/bin/pyff \
+    #cd /opt/PVZDpolman/PolicyManager/bin && ./PEP.sh
+    cd /home/gal/pvpmeta/PVZDbackend/opt/PVZDpolman/PolicyManager/bin && ./PEP.sh
+    #/var/virtualenv/pyff/bin/pyff \
+    pyff \
         --loglevel=DEBUG \
         --log=$LOGDIR/pyffd.log \
         -p /var/run/pyff/pyffd.pid \
