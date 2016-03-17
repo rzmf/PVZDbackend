@@ -12,7 +12,8 @@ git clone ssh://backend@$FRONTENDHOST/var/lib/git/pvmd
 
 BASEDIR='/usr/local/pyFF'
 LOGDIR='/var/log/pvzd'
-
+LOGLEVEL='INFO'
+PIPELINEBATCH='/home/gal/pvpmeta/PVZDbackend/opt/pyff/config/md_aggregate_sign.fd'
 
 # Note: Within Docker a daemon does not make sense. However, if installed
 # without Docker, make sure to to disconnect stdin, stdout # and stderr, and
@@ -26,15 +27,7 @@ do
     cd /home/gal/pvpmeta/PVZDbackend/opt/PVZDpolman/PolicyManager/bin && ./PEP.sh
     #/var/virtualenv/pyff/bin/pyff \
     pyff \
-        --loglevel=DEBUG \
-        --log=$LOGDIR/pyffd.log \
-        -p /var/run/pyff/pyffd.pid \
-        --frequency=300 \
-        --dir=$BASEDIR \
-        -H127.0.0.1 \
-        -P8081 \
-        $BASEDIR/config/pvAt-mdx.fd
-
+        --loglevel=$LOGLEVEL $PIPELINEBATCH
 
     cd /var/lib/git/pvmd && git push
     sleep 600
