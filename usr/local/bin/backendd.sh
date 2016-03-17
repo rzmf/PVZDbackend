@@ -14,6 +14,8 @@ BASEDIR='/usr/local/pyFF'
 LOGDIR='/var/log/pvzd'
 LOGLEVEL='INFO'
 PIPELINEBATCH='/home/gal/pvpmeta/PVZDbackend/opt/pyff/config/md_aggregate_sign.fd'
+export PYKCS11PIN='secret1'
+
 
 # Note: Within Docker a daemon does not make sense. However, if installed
 # without Docker, make sure to to disconnect stdin, stdout # and stderr, and

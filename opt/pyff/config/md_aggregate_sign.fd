@@ -13,8 +13,9 @@
      validUntil: P10D
      ID: SignPortalverbundGvAt_
 - sign:
-    # the last part of the "URI" is the key neme on the eToken
+    # the last part of the "URI" is the key name on the eToken
     key: pkcs11:///usr/lib64/libeToken.so/test
+    # Token PW from ENV PYKCS11PIN
     # SW cert:
     #key: /etc/pki/sign/private/SignMetadataKukPortalverbundAt-key.pem
     #cert: /etc/pki/sign/certs/SignMetadataKukPortalverbundAt-crt.pem
