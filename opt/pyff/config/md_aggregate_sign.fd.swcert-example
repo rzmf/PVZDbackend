@@ -1,0 +1,17 @@
+- load:
+  - /var/lib/pepout/
+# select all except IDPs
+#- select: "!//md:EntityDescriptor[md:IDPSSODescriptor]"
+- select
+- xslt:
+    stylesheet: tidy.xsl
+- store: 
+     directory: /tmp/
+- finalize:
+     cacheDuration: PT4H
+     validUntil: P10D
+     ID: your_metadatafeed_prefix_
+- sign:
+    cert: /etc/pki/sign/certs/SignMetadata-crt.pem
+    key: /etc/pki/sign/private/SignMetadata-key.pem
+- publish: /var/lib/git/pvmd/published/metadata_signed.xml

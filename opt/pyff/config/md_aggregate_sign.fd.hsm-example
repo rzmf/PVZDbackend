@@ -1,5 +1,5 @@
 - load:
-  - /var/lib/git/pvmd/accepted
+  - /var/lib/pepout/
 # select all except IDPs
 #- select: "!//md:EntityDescriptor[md:IDPSSODescriptor]"
 # select all
@@ -11,12 +11,9 @@
 - finalize:
      cacheDuration: PT4H
      validUntil: P10D
-     ID: SignPortalverbundGvAt_
+     ID: your_metadatafeed_prefix_
 - sign:
     # the last part of the "URI" is the key name on the eToken
     key: pkcs11:///usr/lib64/libeToken.so/test
     # Token PW from ENV PYKCS11PIN
-    # SW cert:
-    #key: /etc/pki/sign/private/SignMetadataKukPortalverbundAt-key.pem
-    #cert: /etc/pki/sign/certs/SignMetadataKukPortalverbundAt-crt.pem
 - publish: /var/lib/git/pvmd/published/metadata_signed.xml
