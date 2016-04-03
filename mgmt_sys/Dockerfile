@@ -28,3 +28,8 @@ RUN easy_install --upgrade six
 RUN pip install importlib iso8601==0.1.9 pyff pykcs11==1.3.0
 
 
+ARG USERNAME=backend
+ARG UID=3000
+RUN groupadd --gid $UID $USERNAME \
+ && useradd --gid $UID --uid $UID $USERNAME \
+ && chown $USERNAME:$USERNAME /run /var/log
