@@ -1,15 +1,16 @@
-FROM centos:centos6
+FROM centos:centos7
 MAINTAINER r2h2 <rainer@hoerbe.at>
 
 # RHEL6
 #RUN yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm -y
 # CentOS7
 RUN yum -y install epel-release \
- && yum -y install usbutils nano wget unzip gcc gcc-c++ redhat-lsb-core opensc pcsc-lite \
- && yim -y install python-pip python-devel libxslt-devel
+ && yum -y install curl gcc gcc-c++ git nano unzip wget which \
+ && yum -y install redhat-lsb-core opensc pcsc-lite usbutils \
+ && yum -y install python-pip python-devel libxslt-devel
 
 
-# === install pyFF using py2.6 or 2.7
+# == install pyFF using py2.6 or 2.7
 RUN pip install --upgrade pip \
  && pip install six
 # use easy_install solves install bug
@@ -22,15 +23,6 @@ RUN pip install iso8601==0.1.9 \
 #using pykcs11 1.3.0 because of missing wrapper in v 1.3.1
 RUN pip install pykcs11==1.3.0
 
-# === install Safenet Client
-#RUN yum -y install xorg-x11-apps
-#RUN mkdir -p /opt/sac/
-#COPY mgmt_sys/lib/safenet/Linux/Installation/Core/RPM/x64/SafenetAuthenticationClient-core-9.0.43-0.x86_64.rpm /opt/sac/SafenetAuthenticationClient-core.rpm
-#RUN rpm -i /opt/sac/SafenetAuthenticationClient-core.rpm --nodeps
-#ADD mgmt_sys/lib/safenet/Linux/Installation/Standard/RPM/x64/SafenetAuthenticationClient-9.0.43-0.x86_64.rpm /opt/sac/
-#RUN rpm -i /opt/sac/SafenetAuthenticationClient-9.0.43-0.x86_64.rpm --nodeps
-
-# PVZD/PIP requires py==3.4 (rh scl only has py3.3)
 
 # If using this file to do a manual, non-docker install, then use this:
 # systemctl enable  pcscd.service
@@ -38,38 +30,45 @@ RUN pip install pykcs11==1.3.0
 
 COPY opt /opt
 
-# === install PEP
+# == install PEP
 RUN yum -y install java-1.8.0-openjdk-devel.x86_64
 ENV JAVA_HOME=/etc/alternatives/java_sdk_1.8.0
 
-# CentOS 7: preferring EPEL over redhat-scl and ius:
-RUN yum -y install python34
+# PVZD/PIP requires py==3.4
+# CentOS 7: EPEL does contain pyhton 3.4, but it fails to install PIP -> extra download
+RUN yum -y install python34-devel \
+ && curl https://bootstrap.pypa.io/get-pip.py | python3.4
 
-# CentOS 6: IUS
-#RUN yum -y install https://centos6.iuscommunity.org/ius-release.rpm
-#RUN yum -y install python34u-devel
-
-# RHEL 6: SCL
-
-# install required packages from pypi
-RUN yum -y install libffi-devel openssl-devel
-RUN pip3.4 install -r opt/PVZDpolman/PolicyManager/requirements.txt
-
+# === install required packages from pypi
+# virtualenv helps pyjnius not to get confused with py27/34 (otherwise causing "No module named 'jnius.jnius'")
+RUN yum -y install libffi-devel openssl-devel \
+ && pip3.4 install virtualenv \
+ && mkdir /root/virtualenv \
+ && (cd /root/virtualenv && virtualenv --system-site-packages pvzd34) \
+ && source /root/virtualenv/pvzd34/bin/activate \
+ && pip3.4 install -r opt/PVZDpolman/PolicyManager/requirements.txt
 # install dependent packages from other sources
-#WORKDIR /opt/PVZDpolman/dependent_pkg
-#RUN cd json2html && python3.4 setup.py install && cd ..  # only required for PMP
-#RUN cd ordereddict* && python3.4 setup.py install && cd ../../.. # only for jason2html
+WORKDIR /opt/PVZDpolman/dependent_pkg/json2html
+RUN python3.4 setup.py install && cd ..  # only required for PMP
+#RUN cd ordereddict* && python3.4 setup.py install && cd ../../.. # only for json2html
 WORKDIR /opt/PVZDpolman/dependent_pkg/pyjnius
-RUN JAVA_HOME=$JAVA_HOME; \
-    JDK_HOME=$JAVA_HOME; \
-    JRE_HOME=$JAVA_HOME/jre \
-    python3.4 setup.py install && cd ..
+RUN source /root/virtualenv/pvzd34/bin/activate \
+ && (JDK_HOME=$JAVA_HOME; JRE_HOME=$JAVA_HOME/jre; python3.4 setup.py install) \
+ && curl -O http://mirror.klaus-uwe.me/apache/ant/binaries/apache-ant-1.9.6-bin.zip \
+ && unzip apache-ant-1.9.6-bin.zip \
+ && mv apache-ant-1.9.6 /opt/ant \
+ && ln -s /opt/ant/bin/ant /usr/local/bin/ant \
+ && (ANT_HOME=/opt/ant; make)
 
-# === install git repo
-VOLUME /var/lib/git
-RUN adduser backend && \
-    chown -R backend /opt /var/lib/git /var/log/pyff /var/log/pvzd
+# == install git repo
+ARG USERNAME=backend
+ARG UID=3000
+RUN groupadd --gid $UID $USERNAME \
+ && useradd --gid $UID --uid $UID $USERNAME \
+ && chown $USERNAME:$USERNAME /run \
+ && mkdir -p /var/lib/git /var/log/pyff /var/log/pvzd \
+ && chown -R $USERNAME:$USERNAME /opt /var/lib/git /var/log/pyff /var/log/pvzd
 
 # === startup backend system
-USER backend
+USER $USERNAME
 CMD ["/usr/local/bin/backendd"]

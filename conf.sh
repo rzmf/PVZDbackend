@@ -4,8 +4,8 @@
 export IMGID=9
 export IMAGENAME="rhoerbe/pvzdbe"
 export CONTAINERNAME="pvzdbe${IMGID}"
-export CONTAINERUSER="admin"        # group and user to run container
-export CONTAINERUID="800${IMGID}"   # gid and uid for CONTAINERUSER
+export CONTAINERUSER="pvzdbe${IMGID}"   # group and user to run container
+export CONTAINERUID="800${IMGID}"        # gid and uid for CONTAINERUSER
 export BUILDARGS="
     --build-arg USERNAME=$CONTAINERUSER
     --build-arg UID=$CONTAINERUID
@@ -29,7 +29,7 @@ export VOLMAPPING="
 export STARTCMD='/start.sh'
 
 # create user/group host directories if not existing
-if [ ! id -u $CONTAINERUSER &>/dev/null ]; then
+if ! id -u $CONTAINERUSER &>/dev/null; then
     groupadd -g $CONTAINERUID $CONTAINERUSER
     adduser -M -g $CONTAINERUID -u $CONTAINERUID $CONTAINERUSER
 fi
@@ -47,18 +47,24 @@ chkdir git/ $CONTAINERUSER
 chkdir log/pvzd/ $CONTAINERUSER
 chkdir pyff/config/ $CONTAINERUSER
 
-if [[ ! "$FRONTENDHOST" ]];  then echo "need to set FRONTENDHOST"; exit 1; fi
+export FRONTENDHOST=pvzdfe10
 
 # Prepare the build envirionment
 if [ ! -d 'opt/PVZDpolman' ]; then
-    cd opt && git clone https://github.com/rhoerbe/PVZDpolman
+    mkdir -p opt/PVZDpolman
+    git clone https://github.com/rhoerbe/PVZDpolman opt/PVZDpolman
     cd PVZDpolman/dependent_pkg
-    mkdir YAmikep && cd YAmikep && git clone https://github.com/YAmikep/json2html.git && cd ..
-    ln -s YAmikep/json2html json2html
-    mkdir benson-basis && cd benson-basis && git clone https://github.com/benson-basis/pyjnius.git && cd ..
-    ln -s benson-basis/pyjnius pyjnius
-    curl -O https://pypi.python.org/packages/source/o/ordereddict/ordereddict-1.1.tar.gz
-    tar -xzf ordereddict-*.tar.gz
-    cd ../../..
+    if [[ "$ostype" == "darwin" ]]; then
+        mkdir benson-basis && git clone https://github.com/benson-basis/pyjnius.git benson-basis/pyjnius
+        ln -s benson-basis/pyjnius pyjnius
+    else
+        mkdir kivy && git clone https://github.com/kivy/pyjnius.git kivy/pyjnius
+        ln -s kivy/pyjnius pyjnius
+    fi
+    mkdir -p rhoerbe/json2html && git clone https://github.com/rhoerbe/json2html.git rhoerbe/json2html
+    ln -s rhoerbe/json2html json2html
+    #curl -O https://pypi.python.org/packages/source/o/ordereddict/ordereddict-1.1.tar.gz
+    #tar -xzf ordereddict-*.tar.gz
+    cd ../..
 fi
 
