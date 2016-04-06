@@ -1,32 +1,13 @@
 FROM centos:centos7
 MAINTAINER r2h2 <rainer@hoerbe.at>
 
-# RHEL6
-#RUN yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm -y
+# RHEL6: yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm -y
 # CentOS7
 RUN yum -y install epel-release \
  && yum -y install curl gcc gcc-c++ git nano unzip wget which \
  && yum -y install redhat-lsb-core opensc pcsc-lite usbutils \
  && yum -y install python-pip python-devel libxslt-devel
 
-
-# == install pyFF using py2.6 or 2.7
-RUN pip install --upgrade pip \
- && pip install six
-# use easy_install solves install bug
-# InsecurePlatformWarning can be ignored - this system does not use TLS
-RUN easy_install --upgrade six \
- && pip install importlib
-#using iso8601 0.1.9 because of str/int compare bug in pyff
-RUN pip install iso8601==0.1.9 \
- && pip install pyff
-#using pykcs11 1.3.0 because of missing wrapper in v 1.3.1
-RUN pip install pykcs11==1.3.0
-
-
-# If using this file to do a manual, non-docker install, then use this:
-# systemctl enable  pcscd.service
-# systemctl start  pcscd.service
 
 COPY opt /opt
 
@@ -66,8 +47,8 @@ ARG UID=3000
 RUN groupadd --gid $UID $USERNAME \
  && useradd --gid $UID --uid $UID $USERNAME \
  && chown $USERNAME:$USERNAME /run \
- && mkdir -p /var/lib/git /var/log/pyff /var/log/pvzd \
- && chown -R $USERNAME:$USERNAME /opt /var/lib/git /var/log/pyff /var/log/pvzd
+ && mkdir -p /var/lib/git /var/log/pvzd \
+ && chown -R $USERNAME:$USERNAME /opt /var/lib/git /var/log/pvzd
 
 # === startup backend system
 USER $USERNAME

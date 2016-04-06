@@ -24,7 +24,6 @@ export VOLMAPPING="
     -v $VOLROOT/pepout/:/var/lib/pepout/:Z
     -v $VOLROOT/git/:/var/lib/git/:Z
     -v $VOLROOT/log/pvzd:/var/log/pvzd:Z
-    -v $VOLROOT/pyff/config:/opt/pyff/config/:Z
 "
 export STARTCMD='/start.sh'
 
