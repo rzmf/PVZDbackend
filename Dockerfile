@@ -9,25 +9,28 @@ RUN yum -y install epel-release \
  && yum -y install python-pip python-devel libxslt-devel
 
 
-COPY opt /opt
-
-# == install PEP
+# === JAVA
 RUN yum -y install java-1.8.0-openjdk-devel.x86_64
 ENV JAVA_HOME=/etc/alternatives/java_sdk_1.8.0
 
-# PVZD/PIP requires py==3.4
+# == Python 3.4 (required by PVZDpolman)
 # CentOS 7: EPEL does contain pyhton 3.4, but it fails to install PIP -> extra download
 RUN yum -y install python34-devel \
  && curl https://bootstrap.pypa.io/get-pip.py | python3.4
 
 # === install required packages from pypi
-# virtualenv helps pyjnius not to get confused with py27/34 (otherwise causing "No module named 'jnius.jnius'")
+# virtualenv helps pyjnius not to get confused between py27/34 (otherwise causing "No module named 'jnius.jnius'")
 RUN yum -y install libffi-devel openssl-devel \
  && pip3.4 install virtualenv \
  && mkdir /root/virtualenv \
  && (cd /root/virtualenv && virtualenv --system-site-packages pvzd34) \
- && source /root/virtualenv/pvzd34/bin/activate \
+ && source /root/virtualenv/pvzd34/bin/activate
+
+# == install PEP
+COPY opt /opt
+RUN chmod +x /opt/scripts/* \
  && pip3.4 install -r opt/PVZDpolman/PolicyManager/requirements.txt
+
 # install dependent packages from other sources
 WORKDIR /opt/PVZDpolman/dependent_pkg/json2html
 RUN python3.4 setup.py install && cd ..  # only required for PMP
@@ -52,4 +55,5 @@ RUN groupadd --gid $UID $USERNAME \
 
 # === startup backend system
 USER $USERNAME
-CMD ["/usr/local/bin/backendd"]
+WORKDIR /opt/scripts
+CMD ["/opt/scripts/start.sh"]

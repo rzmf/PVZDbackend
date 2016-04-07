@@ -5,9 +5,6 @@
 # 2. run PEP
 # 3. push results
 
-SCRIPTDIR=$(cd $(dirname $BASH_SOURCE[0]) && pwd)
-source $SCRIPTDIR/conf.sh
-
 # Intialize new container
 if [ ! -d "${PEPOUTDIR}" ]; then
     echo "First time use: initialize repository"

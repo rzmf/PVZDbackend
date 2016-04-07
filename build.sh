@@ -36,7 +36,6 @@ shift $((OPTIND-1))
 SCRIPTDIR=$(cd $(dirname $BASH_SOURCE[0]) && pwd)
 cd $SCRIPTDIR
 source conf${config_nr}.sh
-#./download.sh
 
 if [ $(id -u) -ne 0 ]; then
     sudo="sudo"

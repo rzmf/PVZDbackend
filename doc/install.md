@@ -18,11 +18,17 @@ git clone https://github.com/rhoerbe/PVZDpolman
 Resolve the dependencies within PVZDpolman 
 
 ### PVZD Configuration
-
+Directires and env variables are configured in $PROJ_ROOT/conf.sh.
 Set environent variable FRONTENDHOST in conf.sh before starting docker with run.sh.
     
-
 Enable ssh/git access on frontend system:
-- Create ssh-keys for client (e.g. `ssh-keygen -t ecdsa`)
-- Create account backend@$FRONTEND 
+- gen ssh-keys for client, if they do not exist yet (.ssh mapped to docker host)
+    
+    docker exec -it pvzdbe9 /opt/scripts/gen_sshkey.sh
+    
+- Create account for user backend on frontend host
+ 
 - Authorize ssh key on the frontend host (add local ssh public key to backend@$FRONTEND:~.ssh/authorized_keys)
+
+### Execute PEP
+PEP should be run on a frequent basis to provide responses on uploads before long, e.g. every 30s.
