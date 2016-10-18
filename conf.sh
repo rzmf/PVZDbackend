@@ -29,7 +29,7 @@ elif [[ "$OSTYPE" == "linux" ]]; then
     #PYKCS11PIN='secret1'
     #PYFF_ROOT='/home/gal/pvpmeta/PVZDbackend/opt/pyff'
 else
-    echo "no environment defined for $ostype and $(hostname)"
+    echo "no environment defined for $OSTYPE and $HOSTNAME"
     exit 1
 fi
 
